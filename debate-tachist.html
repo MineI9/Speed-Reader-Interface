@@ -1,0 +1,1179 @@
+<meta charset="UTF-8">
+<title>Tachist — Debate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,560&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F5F5F9;
+    --surface: #FFFFFF;
+    --surface-sunken: #EFEEF6;
+    --text: #1A1926;
+    --text-muted: #6E6C7E;
+    --accent: #4B4FE0;
+    --accent-ink: #FFFFFF;
+    --border: #E2E1EC;
+    --guide: #C9C7DA;
+    --danger: #C4432B;
+    --card-color: #1A1926;
+    --tag-color: #4B4FE0;
+    --skip-color: #ADABBE;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131220;
+      --surface: #1C1B2E;
+      --surface-sunken: #171628;
+      --text: #EEEDF5;
+      --text-muted: #9997AC;
+      --accent: #8B8FFF;
+      --accent-ink: #131220;
+      --border: #302E47;
+      --guide: #3C3A56;
+      --danger: #E38166;
+      --card-color: #EEEDF5;
+      --tag-color: #8B8FFF;
+      --skip-color: #55536E;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131220;
+    --surface: #1C1B2E;
+    --surface-sunken: #171628;
+    --text: #EEEDF5;
+    --text-muted: #9997AC;
+    --accent: #8B8FFF;
+    --accent-ink: #131220;
+    --border: #302E47;
+    --guide: #3C3A56;
+    --danger: #E38166;
+    --card-color: #EEEDF5;
+    --tag-color: #8B8FFF;
+    --skip-color: #55536E;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    padding-inline: 16px;
+    padding-block: 32px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  header.masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 1.7rem;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .masthead p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .theme-toggle {
+    display: flex;
+    gap: 2px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2px;
+  }
+  .theme-toggle button {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 5px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .theme-toggle button[aria-pressed="true"] {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+
+  .mode-tabs, .pace-toggle {
+    display: flex;
+    gap: 2px;
+    width: fit-content;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2px;
+  }
+  .mode-tabs button, .pace-toggle button {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.82rem;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .mode-tabs button[aria-pressed="true"], .pace-toggle button[aria-pressed="true"] {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+
+  .pace-caption {
+    margin: 8px 0 0;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  label.field-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  textarea#source-text {
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    padding: 12px 14px;
+  }
+  textarea#source-text:focus-visible,
+  input:focus-visible,
+  button:focus-visible,
+  .dropzone:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .dropzone {
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    background: var(--surface-sunken);
+    padding: 26px 16px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+  .dropzone.drag {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .dropzone p { margin: 0; }
+
+  .error-msg {
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--danger);
+  }
+
+  .doc-preview {
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .tok-card { color: var(--card-color); }
+  .tok-tag { color: var(--tag-color); font-style: italic; }
+  .tok-skip { color: var(--skip-color); text-decoration: line-through; opacity: 0.55; }
+
+  .preview-legend {
+    margin: 8px 0 0;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .legend-swatch {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .legend-card { background: var(--card-color); }
+  .legend-tag { background: var(--tag-color); }
+  .legend-skip { background: var(--skip-color); }
+
+  .setup-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .wpm-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .wpm-row label.field-label { margin: 0; white-space: nowrap; min-width: 132px; }
+
+  input[type="range"] {
+    flex: 1;
+    accent-color: var(--accent);
+  }
+
+  .wpm-value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-family: var(--font-mono);
+    min-width: 88px;
+    justify-content: flex-end;
+  }
+  .wpm-value input {
+    width: 52px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    text-align: right;
+    padding: 4px 6px;
+  }
+  .wpm-value span { color: var(--text-muted); font-size: 0.8rem; }
+
+  .primary-btn {
+    margin-top: 18px;
+    width: 100%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 13px;
+    cursor: pointer;
+  }
+  .primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .primary-btn:hover:not(:disabled) { filter: brightness(1.06); }
+
+  /* reading stage */
+  .stage-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stage {
+    position: relative;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .stage::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--guide);
+    opacity: 0.6;
+  }
+  .mode-pill {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .mode-pill-tag { color: var(--tag-color); border-color: var(--tag-color); }
+  .mode-pill-card { color: var(--card-color); }
+
+  .stage-word {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(1.8rem, 7vw, 3.2rem);
+    text-align: center;
+    padding-inline: 12px;
+    max-width: 100%;
+    word-break: break-word;
+    text-wrap: balance;
+    color: var(--card-color);
+  }
+  .stage-word-tag { color: var(--tag-color); font-style: italic; }
+
+  .progress-track {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.08s linear;
+  }
+
+  .stage-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icon-btn {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .icon-btn:hover { border-color: var(--accent); }
+
+  .play-btn {
+    flex: 1;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .play-btn:hover { filter: brightness(1.06); }
+
+  .mini-pace-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mini-wpm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .mini-wpm .mini-kind-label { min-width: 34px; }
+  .mini-wpm input[type="range"] { flex: 1; }
+
+  .edit-link {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--font-body);
+  }
+  .edit-link:hover { color: var(--text); }
+
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  kbd {
+    font-family: var(--font-mono);
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.7rem;
+  }
+
+  @media (max-width: 480px) {
+    .wpm-row { flex-wrap: wrap; }
+    .wpm-row label.field-label { min-width: 0; width: 100%; }
+  }
+</style>
+
+<div class="app">
+  <header class="masthead">
+    <div>
+      <h1>Tachist — Debate</h1>
+      <p>Upload a Read Doc, and read tags at one speed, card text at another.</p>
+    </div>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button type="button" id="theme-system" aria-pressed="true">Auto</button>
+      <button type="button" id="theme-light" aria-pressed="false">Light</button>
+      <button type="button" id="theme-dark" aria-pressed="false">Dark</button>
+    </div>
+  </header>
+
+  <div class="mode-tabs" role="group" aria-label="Input mode">
+    <button type="button" id="mode-docx" aria-pressed="true">Debate Doc (.docx)</button>
+    <button type="button" id="mode-text" aria-pressed="false">Plain Text</button>
+  </div>
+
+  <section class="panel" id="setup-panel">
+    <div id="docx-mode-panel">
+      <label class="field-label">Read Doc</label>
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose or drop a .docx file">
+        <input type="file" id="file-input" accept=".docx" hidden>
+        <p id="dropzone-text">Drop a .docx file here, or click to browse</p>
+      </div>
+      <div class="error-msg" id="parse-error" hidden></div>
+      <div id="preview-wrap" hidden>
+        <label class="field-label" style="margin-top:16px;">Preview</label>
+        <div class="doc-preview" id="doc-preview"></div>
+        <p class="preview-legend">
+          <span><span class="legend-swatch legend-card"></span>Card text</span>
+          <span><span class="legend-swatch legend-tag"></span>Tag / Analytic</span>
+          <span><span class="legend-swatch legend-skip"></span>Skipped (Block / Hat)</span>
+        </p>
+      </div>
+    </div>
+
+    <div id="text-mode-panel" hidden>
+      <label class="field-label" for="source-text">Text</label>
+      <textarea id="source-text" spellcheck="false">Paste a card or any passage here to practice at a single pace, the same way the original Tachist works.</textarea>
+    </div>
+
+    <label class="field-label" style="margin-top:16px;">Pace by</label>
+    <div class="pace-toggle" role="group" aria-label="Pace unit">
+      <button type="button" id="pace-word" aria-pressed="true">Words</button>
+      <button type="button" id="pace-syllable" aria-pressed="false">Syllables</button>
+    </div>
+    <p class="pace-caption">Syllable pacing gives each word a display time proportional to how long it takes to say, instead of one fixed beat per word.</p>
+
+    <div class="setup-meta" id="docx-meta-row">
+      <span id="tag-count-label">0 tag words</span>
+      <span id="card-count-label">0 card words</span>
+    </div>
+    <div class="setup-meta" id="text-meta-row" hidden>
+      <span id="word-count-label">0 words</span>
+    </div>
+    <div class="setup-meta">
+      <span id="time-estimate-label">~0 sec total</span>
+    </div>
+
+    <div class="wpm-row" id="tag-pace-row">
+      <label class="field-label" id="tag-pace-field-label" for="tag-wpm-slider">Tag / Analytic speed</label>
+      <input type="range" id="tag-wpm-slider" min="100" max="900" step="10" value="300">
+      <div class="wpm-value">
+        <input type="number" id="tag-wpm-number" min="60" max="1200" step="10" value="300">
+        <span id="tag-wpm-unit">wpm</span>
+      </div>
+    </div>
+    <div class="wpm-row" id="card-pace-row">
+      <label class="field-label" id="card-pace-field-label" for="card-wpm-slider">Card Text speed</label>
+      <input type="range" id="card-wpm-slider" min="100" max="900" step="10" value="420">
+      <div class="wpm-value">
+        <input type="number" id="card-wpm-number" min="60" max="1200" step="10" value="420">
+        <span id="card-wpm-unit">wpm</span>
+      </div>
+    </div>
+
+    <button class="primary-btn" id="start-btn" disabled>Start reading</button>
+  </section>
+
+  <section class="panel stage-panel" id="reading-panel" hidden>
+    <div class="stage" id="stage">
+      <span class="mode-pill" id="mode-pill" hidden>TAG</span>
+      <div class="stage-word" id="stage-word"></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="stage-meta">
+      <span id="word-position">0 / 0</span>
+      <span id="time-remaining">0:00 left</span>
+    </div>
+    <div class="controls-row">
+      <button class="icon-btn" id="restart-btn" title="Restart">⟲ Restart</button>
+      <button class="play-btn" id="play-btn">▶ Play</button>
+    </div>
+    <div class="mini-pace-row">
+      <div class="mini-wpm" id="tag-mini-row">
+        <span class="mini-kind-label">Tag</span>
+        <input type="range" id="tag-wpm-slider-2" min="100" max="900" step="10" value="300">
+        <span id="tag-mini-label">300</span>
+        <span id="tag-mini-unit">wpm</span>
+      </div>
+      <div class="mini-wpm" id="card-mini-row">
+        <span class="mini-kind-label" id="card-mini-kind-label">Card</span>
+        <input type="range" id="card-wpm-slider-2" min="100" max="900" step="10" value="420">
+        <span id="card-mini-label">420</span>
+        <span id="card-mini-unit">wpm</span>
+      </div>
+    </div>
+    <button class="edit-link" id="edit-btn">← Edit</button>
+    <p class="hint"><kbd>Space</kbd> play / pause &nbsp;·&nbsp; <kbd>←</kbd> <kbd>→</kbd> step a word &nbsp;·&nbsp; <kbd>Esc</kbd> edit</p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var root = document.documentElement;
+
+  // ---------- generic helpers ----------
+
+  function splitTokens(text) {
+    return text.split(/\s+/).filter(function (w) { return w.length > 0; });
+  }
+
+  // Approximate heuristic: counts vowel-sound groups, trims silent endings.
+  function countSyllables(rawWord) {
+    var word = rawWord.toLowerCase().replace(/[^a-z]/g, "");
+    if (word.length === 0) return 1;
+    if (word.length <= 3) return 1;
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, "");
+    word = word.replace(/^y/, "");
+    var matches = word.match(/[aeiouy]{1,2}/g);
+    return matches ? matches.length : 1;
+  }
+
+  function formatDuration(totalSeconds) {
+    if (totalSeconds < 60) return totalSeconds + " sec";
+    var m = Math.floor(totalSeconds / 60);
+    var s = totalSeconds % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  // ---------- docx parsing ----------
+
+  function getDirectChild(el, tagName) {
+    var kids = el.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i].tagName === tagName) return kids[i];
+    }
+    return null;
+  }
+
+  function getDirectChildren(el, tagName) {
+    var out = [];
+    var kids = el.children;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i].tagName === tagName) out.push(kids[i]);
+    }
+    return out;
+  }
+
+  function buildStyleInfo(stylesDoc) {
+    var map = {};
+    if (!stylesDoc) return map;
+    var styleEls = stylesDoc.getElementsByTagName("w:style");
+    for (var i = 0; i < styleEls.length; i++) {
+      var styleEl = styleEls[i];
+      var styleId = styleEl.getAttribute("w:styleId");
+      if (!styleId) continue;
+      var nameEl = getDirectChild(styleEl, "w:name");
+      var name = nameEl ? nameEl.getAttribute("w:val") : null;
+      var rPr = getDirectChild(styleEl, "w:rPr");
+      var highlight = null, underline = null;
+      if (rPr) {
+        var hEl = getDirectChild(rPr, "w:highlight");
+        if (hEl) highlight = hEl.getAttribute("w:val");
+        var uEl = getDirectChild(rPr, "w:u");
+        if (uEl) underline = uEl.getAttribute("w:val");
+      }
+      map[styleId] = { name: name, highlight: highlight, underline: underline };
+    }
+    return map;
+  }
+
+  function classifyStyle(styleId, styleInfo) {
+    var info = (styleId && styleInfo[styleId]) || {};
+    var name = (info.name || "").toLowerCase();
+    var idLower = (styleId || "").toLowerCase();
+    var headingMatch = name.match(/heading\s*([1-9])/) || idLower.match(/heading\s*([1-9])/);
+    if (headingMatch) return { headingLevel: parseInt(headingMatch[1], 10) };
+    if (name.indexOf("analytic") !== -1 || idLower.indexOf("analytic") !== -1) return { analytic: true };
+    return {};
+  }
+
+  function getRunDirectFormatting(runEl) {
+    var rPr = getDirectChild(runEl, "w:rPr");
+    var highlight = null, underline = null, rStyleId = null;
+    if (rPr) {
+      var hEl = getDirectChild(rPr, "w:highlight");
+      if (hEl) highlight = hEl.getAttribute("w:val");
+      var uEl = getDirectChild(rPr, "w:u");
+      if (uEl) underline = uEl.getAttribute("w:val");
+      var rsEl = getDirectChild(rPr, "w:rStyle");
+      if (rsEl) rStyleId = rsEl.getAttribute("w:val");
+    }
+    return { highlight: highlight, underline: underline, rStyleId: rStyleId };
+  }
+
+  function isRunEmphasized(runEl, styleInfo) {
+    var fmt = getRunDirectFormatting(runEl);
+    var h = fmt.highlight, u = fmt.underline;
+    var styleFmt = fmt.rStyleId ? styleInfo[fmt.rStyleId] : null;
+    if ((h === null || h === undefined) && styleFmt) h = styleFmt.highlight;
+    if ((u === null || u === undefined) && styleFmt) u = styleFmt.underline;
+    var hasHighlight = !!h && h !== "none";
+    var hasUnderline = !!u && u !== "none";
+    return hasHighlight || hasUnderline;
+  }
+
+  function getRunText(runEl) {
+    var text = "";
+    var kids = runEl.children;
+    for (var i = 0; i < kids.length; i++) {
+      var tag = kids[i].tagName;
+      if (tag === "w:t") text += kids[i].textContent || "";
+      else if (tag === "w:tab") text += " ";
+      else if (tag === "w:br" || tag === "w:cr") text += " ";
+    }
+    return text;
+  }
+
+  function collectRuns(pEl) {
+    var runs = [];
+    function walk(el) {
+      var kids = el.children;
+      for (var i = 0; i < kids.length; i++) {
+        var tag = kids[i].tagName;
+        if (tag === "w:r") runs.push(kids[i]);
+        else if (tag === "w:hyperlink" || tag === "w:smartTag" || tag === "w:ins") walk(kids[i]);
+      }
+    }
+    walk(pEl);
+    return runs;
+  }
+
+  function processParagraph(pEl, styleInfo) {
+    var pPr = getDirectChild(pEl, "w:pPr");
+    var pStyleId = null;
+    if (pPr) {
+      var psEl = getDirectChild(pPr, "w:pStyle");
+      if (psEl) pStyleId = psEl.getAttribute("w:val");
+    }
+    var styleClass = classifyStyle(pStyleId, styleInfo);
+    var runs = collectRuns(pEl);
+    var runWords = [];
+    for (var i = 0; i < runs.length; i++) {
+      var text = getRunText(runs[i]);
+      if (!text) continue;
+      var emphasized = isRunEmphasized(runs[i], styleInfo);
+      var words = splitTokens(text);
+      for (var j = 0; j < words.length; j++) runWords.push({ text: words[j], emphasized: emphasized });
+    }
+    if (runWords.length === 0) return [];
+
+    var paragraphKind;
+    if (styleClass.headingLevel != null && styleClass.headingLevel <= 3) {
+      paragraphKind = "skip";
+    } else if (styleClass.headingLevel != null) {
+      paragraphKind = "tag-whole";
+    } else if (styleClass.analytic) {
+      paragraphKind = "tag-whole";
+    } else {
+      var anyEmphasis = runWords.some(function (w) { return w.emphasized; });
+      paragraphKind = anyEmphasis ? "card-mixed" : "tag-whole";
+    }
+
+    return runWords.map(function (w) {
+      var kind;
+      if (paragraphKind === "skip") kind = "skip";
+      else if (paragraphKind === "tag-whole") kind = "tag";
+      else kind = w.emphasized ? "card" : "skip";
+      return { text: w.text, kind: kind };
+    });
+  }
+
+  async function parseDocxFile(file) {
+    var buf = await file.arrayBuffer();
+    var zip = await JSZip.loadAsync(buf);
+    var docEntry = zip.file("word/document.xml");
+    if (!docEntry) throw new Error("not a valid .docx (missing document.xml)");
+    var docXmlText = await docEntry.async("string");
+    var stylesEntry = zip.file("word/styles.xml");
+    var stylesXmlText = stylesEntry ? await stylesEntry.async("string") : null;
+
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(docXmlText, "application/xml");
+    if (xmlDoc.getElementsByTagName("parsererror").length) throw new Error("could not parse document.xml");
+    var stylesDoc = stylesXmlText ? parser.parseFromString(stylesXmlText, "application/xml") : null;
+
+    var styleInfo = buildStyleInfo(stylesDoc);
+    var body = xmlDoc.getElementsByTagName("w:body")[0];
+    if (!body) throw new Error("no document body found");
+    var paragraphs = getDirectChildren(body, "w:p");
+    var allWords = [];
+    for (var i = 0; i < paragraphs.length; i++) {
+      allWords = allWords.concat(processParagraph(paragraphs[i], styleInfo));
+    }
+    return allWords; // [{text, kind: 'tag'|'card'|'skip'}]
+  }
+
+  function toPlayTokens(words) {
+    return words
+      .filter(function (w) { return w.kind !== "skip"; })
+      .map(function (w) { return { text: w.text, kind: w.kind, syllables: countSyllables(w.text) }; });
+  }
+
+  // ---------- DOM refs ----------
+
+  var modeDocxBtn = document.getElementById("mode-docx");
+  var modeTextBtn = document.getElementById("mode-text");
+  var docxModePanel = document.getElementById("docx-mode-panel");
+  var textModePanel = document.getElementById("text-mode-panel");
+
+  var dropzone = document.getElementById("dropzone");
+  var dropzoneText = document.getElementById("dropzone-text");
+  var fileInput = document.getElementById("file-input");
+  var parseError = document.getElementById("parse-error");
+  var previewWrap = document.getElementById("preview-wrap");
+  var docPreview = document.getElementById("doc-preview");
+
+  var sourceText = document.getElementById("source-text");
+
+  var docxMetaRow = document.getElementById("docx-meta-row");
+  var textMetaRow = document.getElementById("text-meta-row");
+  var tagCountLabel = document.getElementById("tag-count-label");
+  var cardCountLabel = document.getElementById("card-count-label");
+  var wordCountLabel = document.getElementById("word-count-label");
+  var timeEstimateLabel = document.getElementById("time-estimate-label");
+
+  var paceWordBtn = document.getElementById("pace-word");
+  var paceSyllableBtn = document.getElementById("pace-syllable");
+
+  var tagPaceRow = document.getElementById("tag-pace-row");
+  var tagPaceFieldLabel = document.getElementById("tag-pace-field-label");
+  var tagWpmSlider = document.getElementById("tag-wpm-slider");
+  var tagWpmNumber = document.getElementById("tag-wpm-number");
+  var tagWpmUnit = document.getElementById("tag-wpm-unit");
+
+  var cardPaceFieldLabel = document.getElementById("card-pace-field-label");
+  var cardWpmSlider = document.getElementById("card-wpm-slider");
+  var cardWpmNumber = document.getElementById("card-wpm-number");
+  var cardWpmUnit = document.getElementById("card-wpm-unit");
+
+  var startBtn = document.getElementById("start-btn");
+  var setupPanel = document.getElementById("setup-panel");
+  var readingPanel = document.getElementById("reading-panel");
+  var stageWord = document.getElementById("stage-word");
+  var modePill = document.getElementById("mode-pill");
+  var progressFill = document.getElementById("progress-fill");
+  var wordPosition = document.getElementById("word-position");
+  var timeRemaining = document.getElementById("time-remaining");
+  var playBtn = document.getElementById("play-btn");
+  var restartBtn = document.getElementById("restart-btn");
+  var editBtn = document.getElementById("edit-btn");
+
+  var tagMiniRow = document.getElementById("tag-mini-row");
+  var tagWpmSlider2 = document.getElementById("tag-wpm-slider-2");
+  var tagMiniLabel = document.getElementById("tag-mini-label");
+  var tagMiniUnit = document.getElementById("tag-mini-unit");
+
+  var cardMiniKindLabel = document.getElementById("card-mini-kind-label");
+  var cardWpmSlider2 = document.getElementById("card-wpm-slider-2");
+  var cardMiniLabel = document.getElementById("card-mini-label");
+  var cardMiniUnit = document.getElementById("card-mini-unit");
+
+  // ---------- state ----------
+
+  var PACE_CONFIG = {
+    word: { min: 100, max: 900, step: 10, clampMin: 60, clampMax: 1200, unit: "wpm", label: "speed" },
+    syllable: { min: 100, max: 1400, step: 10, clampMin: 60, clampMax: 2000, unit: "syl/min", label: "speed" }
+  };
+
+  var inputMode = "docx";
+  var paceMode = "word";
+  var paceValues = { tag: { word: 300, syllable: 400 }, card: { word: 420, syllable: 560 } };
+
+  var currentDocxWords = []; // full parse incl. skipped, for preview
+  var tokens = [];
+  var index = 0;
+  var playing = false;
+  var timerId = null;
+
+  // ---------- input mode ----------
+
+  function setInputMode(mode) {
+    inputMode = mode;
+    modeDocxBtn.setAttribute("aria-pressed", mode === "docx" ? "true" : "false");
+    modeTextBtn.setAttribute("aria-pressed", mode === "text" ? "true" : "false");
+    docxModePanel.hidden = mode !== "docx";
+    textModePanel.hidden = mode !== "text";
+    docxMetaRow.hidden = mode !== "docx";
+    textMetaRow.hidden = mode !== "text";
+    tagPaceRow.hidden = mode !== "docx";
+    tagMiniRow.hidden = mode !== "docx";
+    cardPaceFieldLabel.textContent = mode === "docx" ? "Card Text speed" : "Reading speed";
+    cardMiniKindLabel.textContent = mode === "docx" ? "Card" : "Speed";
+    updateMeta();
+  }
+  modeDocxBtn.addEventListener("click", function () { setInputMode("docx"); });
+  modeTextBtn.addEventListener("click", function () { setInputMode("text"); });
+
+  // ---------- docx handling ----------
+
+  function showError(msg) {
+    parseError.textContent = msg;
+    parseError.hidden = false;
+  }
+
+  function renderPreview(words) {
+    docPreview.innerHTML = "";
+    words.forEach(function (w) {
+      var span = document.createElement("span");
+      span.className = "tok-" + w.kind;
+      span.textContent = w.text + " ";
+      docPreview.appendChild(span);
+    });
+  }
+
+  async function handleFile(file) {
+    parseError.hidden = true;
+    if (!/\.docx$/i.test(file.name)) {
+      showError("Please choose a .docx file.");
+      return;
+    }
+    dropzoneText.textContent = "Parsing " + file.name + " …";
+    try {
+      var words = await parseDocxFile(file);
+      currentDocxWords = words;
+      var playable = toPlayTokens(words).length;
+      dropzoneText.textContent = file.name + " — " + playable + " words to read (click to choose a different file)";
+      previewWrap.hidden = false;
+      renderPreview(words);
+      updateMeta();
+    } catch (err) {
+      showError("Could not read that file: " + err.message);
+      currentDocxWords = [];
+      previewWrap.hidden = true;
+      updateMeta();
+    }
+  }
+
+  dropzone.addEventListener("click", function () { fileInput.click(); });
+  dropzone.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
+  });
+  fileInput.addEventListener("change", function (e) {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+  dropzone.addEventListener("dragover", function (e) { e.preventDefault(); dropzone.classList.add("drag"); });
+  dropzone.addEventListener("dragleave", function () { dropzone.classList.remove("drag"); });
+  dropzone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dropzone.classList.remove("drag");
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  // ---------- pace ----------
+
+  function clampRound(value, cfg) {
+    return Math.max(cfg.clampMin, Math.min(cfg.clampMax, Math.round(value / 10) * 10));
+  }
+
+  function setPaceMode(mode) {
+    paceMode = mode;
+    var cfg = PACE_CONFIG[mode];
+    paceWordBtn.setAttribute("aria-pressed", mode === "word" ? "true" : "false");
+    paceSyllableBtn.setAttribute("aria-pressed", mode === "syllable" ? "true" : "false");
+    [tagWpmSlider, tagWpmSlider2, cardWpmSlider, cardWpmSlider2].forEach(function (el) {
+      el.min = cfg.min; el.max = cfg.max; el.step = cfg.step;
+    });
+    tagPaceFieldLabel.textContent = "Tag / Analytic " + cfg.label;
+    tagWpmUnit.textContent = cfg.unit;
+    tagMiniUnit.textContent = cfg.unit;
+    cardPaceFieldLabel.textContent = (inputMode === "docx" ? "Card Text " : "Reading ") + cfg.label;
+    cardWpmUnit.textContent = cfg.unit;
+    cardMiniUnit.textContent = cfg.unit;
+    setPace("tag", paceValues.tag[mode]);
+    setPace("card", paceValues.card[mode]);
+  }
+
+  function setPace(kind, value) {
+    var cfg = PACE_CONFIG[paceMode];
+    value = clampRound(value, cfg);
+    paceValues[kind][paceMode] = value;
+    if (kind === "tag") {
+      tagWpmSlider.value = value; tagWpmNumber.value = value;
+      tagWpmSlider2.value = Math.max(Number(tagWpmSlider2.min), Math.min(Number(tagWpmSlider2.max), value));
+      tagMiniLabel.textContent = value;
+    } else {
+      cardWpmSlider.value = value; cardWpmNumber.value = value;
+      cardWpmSlider2.value = Math.max(Number(cardWpmSlider2.min), Math.min(Number(cardWpmSlider2.max), value));
+      cardMiniLabel.textContent = value;
+    }
+    updateMeta();
+    if (playing) {
+      clearTimeout(timerId);
+      showCurrentAndScheduleNext();
+    }
+  }
+
+  paceWordBtn.addEventListener("click", function () { setPaceMode("word"); });
+  paceSyllableBtn.addEventListener("click", function () { setPaceMode("syllable"); });
+  tagWpmSlider.addEventListener("input", function () { setPace("tag", Number(tagWpmSlider.value)); });
+  tagWpmNumber.addEventListener("input", function () { var v = Number(tagWpmNumber.value); if (!isNaN(v)) setPace("tag", v); });
+  tagWpmSlider2.addEventListener("input", function () { setPace("tag", Number(tagWpmSlider2.value)); });
+  cardWpmSlider.addEventListener("input", function () { setPace("card", Number(cardWpmSlider.value)); });
+  cardWpmNumber.addEventListener("input", function () { var v = Number(cardWpmNumber.value); if (!isNaN(v)) setPace("card", v); });
+  cardWpmSlider2.addEventListener("input", function () { setPace("card", Number(cardWpmSlider2.value)); });
+  sourceText.addEventListener("input", updateMeta);
+
+  // ---------- meta / stats ----------
+
+  function updateMeta() {
+    if (inputMode === "docx") {
+      var playTokens = toPlayTokens(currentDocxWords);
+      var tagTokens = playTokens.filter(function (t) { return t.kind === "tag"; });
+      var cardTokens = playTokens.filter(function (t) { return t.kind === "card"; });
+      var tagSyl = tagTokens.reduce(function (s, t) { return s + t.syllables; }, 0);
+      var cardSyl = cardTokens.reduce(function (s, t) { return s + t.syllables; }, 0);
+      tagCountLabel.textContent = tagTokens.length + " tag words · " + tagSyl + " syllables";
+      cardCountLabel.textContent = cardTokens.length + " card words · " + cardSyl + " syllables";
+      var tagUnits = paceMode === "syllable" ? tagSyl : tagTokens.length;
+      var cardUnits = paceMode === "syllable" ? cardSyl : cardTokens.length;
+      var tagSeconds = tagUnits > 0 ? (tagUnits / paceValues.tag[paceMode]) * 60 : 0;
+      var cardSeconds = cardUnits > 0 ? (cardUnits / paceValues.card[paceMode]) * 60 : 0;
+      timeEstimateLabel.textContent = "~" + formatDuration(Math.round(tagSeconds + cardSeconds)) + " total";
+      startBtn.disabled = playTokens.length === 0;
+    } else {
+      var words = splitTokens(sourceText.value);
+      var syl = words.reduce(function (s, w) { return s + countSyllables(w); }, 0);
+      wordCountLabel.textContent = words.length + (words.length === 1 ? " word" : " words") +
+        " · " + syl + (syl === 1 ? " syllable" : " syllables");
+      var units = paceMode === "syllable" ? syl : words.length;
+      var seconds = units > 0 ? Math.round((units / paceValues.card[paceMode]) * 60) : 0;
+      timeEstimateLabel.textContent = "~" + formatDuration(seconds) + " total";
+      startBtn.disabled = words.length === 0;
+    }
+  }
+
+  // ---------- playback ----------
+
+  startBtn.addEventListener("click", function () {
+    if (inputMode === "docx") {
+      tokens = toPlayTokens(currentDocxWords);
+    } else {
+      tokens = splitTokens(sourceText.value).map(function (w) {
+        return { text: w, kind: "card", syllables: countSyllables(w) };
+      });
+    }
+    if (tokens.length === 0) return;
+    index = 0;
+    setupPanel.hidden = true;
+    readingPanel.hidden = false;
+    modePill.hidden = inputMode !== "docx";
+    play();
+  });
+
+  editBtn.addEventListener("click", goToEdit);
+
+  function goToEdit() {
+    pause();
+    readingPanel.hidden = true;
+    setupPanel.hidden = false;
+    updateMeta();
+  }
+
+  function renderWord() {
+    var current = tokens[index];
+    stageWord.textContent = current ? current.text : "";
+    stageWord.className = "stage-word" + (current && current.kind === "tag" ? " stage-word-tag" : "");
+    if (current && inputMode === "docx") {
+      modePill.hidden = false;
+      modePill.textContent = current.kind === "tag" ? "TAG" : "CARD";
+      modePill.className = "mode-pill mode-pill-" + current.kind;
+    } else {
+      modePill.hidden = true;
+    }
+    var pct = tokens.length > 0 ? (index / tokens.length) * 100 : 0;
+    progressFill.style.width = pct + "%";
+    wordPosition.textContent = (tokens.length > 0 ? index + 1 : 0) + " / " + tokens.length;
+
+    var remaining = tokens.slice(index + 1);
+    var secondsLeft = remaining.reduce(function (sum, t) {
+      return sum + wordInterval(t) / 1000;
+    }, 0);
+    timeRemaining.textContent = formatDuration(Math.round(secondsLeft)) + " left";
+  }
+
+  function wordInterval(token) {
+    var kindPace = paceValues[token.kind] ? paceValues[token.kind][paceMode] : paceValues.card[paceMode];
+    var base = 60000 / kindPace;
+    var interval = paceMode === "syllable" ? base * token.syllables : base;
+    return Math.max(interval, 40);
+  }
+
+  function showCurrentAndScheduleNext() {
+    renderWord();
+    var current = tokens[index];
+    if (!current) { pause(); return; }
+    var interval = wordInterval(current);
+    if (index >= tokens.length - 1) {
+      timerId = setTimeout(function () { pause(); }, interval);
+      return;
+    }
+    timerId = setTimeout(function () {
+      index++;
+      showCurrentAndScheduleNext();
+    }, interval);
+  }
+
+  function play() {
+    if (tokens.length === 0) return;
+    if (index >= tokens.length - 1) index = 0;
+    playing = true;
+    playBtn.textContent = "⏸ Pause";
+    showCurrentAndScheduleNext();
+  }
+
+  function pause() {
+    playing = false;
+    playBtn.textContent = "▶ Play";
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  }
+
+  playBtn.addEventListener("click", function () {
+    if (playing) pause(); else play();
+  });
+
+  restartBtn.addEventListener("click", function () {
+    pause();
+    index = 0;
+    renderWord();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (readingPanel.hidden) return;
+    if (e.code === "Space") {
+      e.preventDefault();
+      if (playing) pause(); else play();
+    } else if (e.code === "ArrowRight") {
+      e.preventDefault();
+      pause();
+      index = Math.min(index + 1, tokens.length - 1);
+      renderWord();
+    } else if (e.code === "ArrowLeft") {
+      e.preventDefault();
+      pause();
+      index = Math.max(index - 1, 0);
+      renderWord();
+    } else if (e.code === "Escape") {
+      e.preventDefault();
+      goToEdit();
+    }
+  });
+
+  // ---------- theme ----------
+
+  var themeButtons = {
+    system: document.getElementById("theme-system"),
+    light: document.getElementById("theme-light"),
+    dark: document.getElementById("theme-dark")
+  };
+  function setTheme(mode) {
+    if (mode === "system") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", mode);
+    Object.keys(themeButtons).forEach(function (key) {
+      themeButtons[key].setAttribute("aria-pressed", key === mode ? "true" : "false");
+    });
+    try { localStorage.setItem("tachist-debate-theme", mode); } catch (e) {}
+  }
+  Object.keys(themeButtons).forEach(function (key) {
+    themeButtons[key].addEventListener("click", function () { setTheme(key); });
+  });
+  try {
+    var saved = localStorage.getItem("tachist-debate-theme");
+    if (saved) setTheme(saved);
+  } catch (e) {}
+
+  setInputMode("docx");
+  setPaceMode("word");
+})();
+</script>
